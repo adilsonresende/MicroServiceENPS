@@ -7,16 +7,11 @@
             "type": "process",
             "args": [
                 "build",
-                "${workspaceFolder}/src/MicroservicesENPS.UserServices/MicroservicesENPS.UserServices.csproj",
+                "${workspaceFolder}/MicroservicesENPS.UserServices/MicroservicesENPS.UserServices.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],
-            "problemMatcher": "$msCompile",
-            "group": {
-                "kind": "build",
-                "isDefault": true
-            }
-            
+            "problemMatcher": "$msCompile"
         },
         {
             "label": "publish",
@@ -24,7 +19,7 @@
             "type": "process",
             "args": [
                 "publish",
-                "${workspaceFolder}/src/MicroservicesENPS.UserServices/MicroservicesENPS.UserServices.csproj",
+                "${workspaceFolder}/MicroservicesENPS.UserServices/MicroservicesENPS.UserServices.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],
@@ -37,7 +32,7 @@
             "args": [
                 "watch",
                 "run",
-                "${workspaceFolder}/src/MicroservicesENPS.UserServices/MicroservicesENPS.UserServices.csproj",
+                "${workspaceFolder}/MicroservicesENPS.UserServices/MicroservicesENPS.UserServices.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],
