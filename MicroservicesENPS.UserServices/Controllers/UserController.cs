@@ -34,7 +34,7 @@ namespace MicroserviceENPS.UserServices.Controllers
         }
 
         [HttpPut]
-        [Route(nameof(GetAll))]
+        [Route(nameof(UpdateAsync))]
         public async Task<IActionResult> UpdateAsync([FromBody] UserDTO userDTO)
         {
             ServiceResponse<bool> _serviceResponse = await _iUserService.UpdateAsync(userDTO);

@@ -51,9 +51,9 @@ namespace MicroserviceENPS.UserServices.Entities
         public byte[] PasswordSalt { get; private set; }
         public byte[] PasswordHash { get; private set; }
 
-        public void SetActiveToFalse()
+        public void ChangeIsActiveState()
         {
-            IsActive = false;
+            IsActive = !IsActive;
         }
 
         private bool IsValidEmail(string email)

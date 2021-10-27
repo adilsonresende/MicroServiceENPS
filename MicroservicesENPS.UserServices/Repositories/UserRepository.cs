@@ -34,7 +34,7 @@ namespace MicroserviceENPS.UserServices.Repositories.Interfaces
         {
             FilterDefinition<User> filterDefinition = filterDefinitionBuilder.Eq(x => x.Id, idUser);
             User user = await _iMongoCollection.Find(filterDefinition).FirstOrDefaultAsync();
-            user.SetActiveToFalse();
+            user.ChangeIsActiveState();
             await _iMongoCollection.ReplaceOneAsync(filterDefinition, user);
         }
 

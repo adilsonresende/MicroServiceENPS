@@ -1,3 +1,6 @@
+using MicroservicesENPS.CompanyServices.Repositories.Interfaces;
+using MicroservicesENPS.CompanyServices.Services;
+using MicroservicesENPS.CompanyServices.Services.Interfaces;
 using MicroservicesENPS.CompanyServices.Settings;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -25,6 +28,18 @@ namespace MicroservicesENPS.CompanyServices.Helpers
                 return mongoClient.GetDatabase(serviceSettings.ServiceName);
             });
             
+            return services;
+        }
+
+         public static IServiceCollection AddRepository(this IServiceCollection services)
+        {
+            services.AddSingleton<ICompanyReposiory, CompanyReposiory>();
+            return services;
+        }
+
+        public static IServiceCollection AddServices(this IServiceCollection services)
+        {
+            services.AddSingleton<ICompanyService, CompanyService>();
             return services;
         }
     }
