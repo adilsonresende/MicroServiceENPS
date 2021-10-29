@@ -6,7 +6,7 @@ using MicroservicesENPS.CompanyServices.Entities;
 
 namespace MicroservicesENPS.CompanyServices.Repositories.Interfaces
 {
-    public interface ICompanyReposiory
+    public interface ICompanyRepository
     {
          Task<Guid> InsertAsync(Company Company);
          Task UpdateAsync(Company company);

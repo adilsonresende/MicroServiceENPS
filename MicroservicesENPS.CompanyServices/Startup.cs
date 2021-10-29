@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using MicroservicesENPS.CompanyServices.MappingProfiles;
 
 namespace MicroservicesENPS.CompanyServices
 {
@@ -21,8 +22,11 @@ namespace MicroservicesENPS.CompanyServices
         public void ConfigureServices(IServiceCollection services)
         {
 
-            services.AddControllers();
             services.AddMongoDb();
+            services.AddAutoMapper(typeof(MappingProfile));
+            services.AddRepository();
+            services.AddServices();
+            services.AddControllers();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "MicroservicesENPS.Company", Version = "v1" });

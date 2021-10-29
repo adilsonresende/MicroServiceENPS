@@ -8,7 +8,6 @@ using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Serializers;
 using MongoDB.Driver;
-
 namespace MicroservicesENPS.CompanyServices.Helpers
 {
     public static class ServiceExtensions
@@ -27,13 +26,13 @@ namespace MicroservicesENPS.CompanyServices.Helpers
                 var mongoClient = new MongoClient(mongoDbSettings.ConnectionString);
                 return mongoClient.GetDatabase(serviceSettings.ServiceName);
             });
-            
+
             return services;
         }
 
-         public static IServiceCollection AddRepository(this IServiceCollection services)
+        public static IServiceCollection AddRepository(this IServiceCollection services)
         {
-            services.AddSingleton<ICompanyReposiory, CompanyReposiory>();
+            services.AddSingleton<ICompanyRepository, CompanyRepository>();
             return services;
         }
 

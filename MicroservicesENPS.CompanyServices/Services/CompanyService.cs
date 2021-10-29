@@ -1,31 +1,80 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using AutoMapper;
 using MicroservicesENPS.CompanyServices.DTOs;
+using MicroservicesENPS.CompanyServices.Entities;
+using MicroservicesENPS.CompanyServices.Repositories.Interfaces;
 using MicroservicesENPS.CompanyServices.Services.Interfaces;
 
 namespace MicroservicesENPS.CompanyServices.Services
 {
     public class CompanyService : ICompanyService
     {
-        public Task<ServiceResponse<List<CompanyDTO>>> GetAllAsync(CompanyFilterDTO companyFilterDTO)
+        private readonly IMapper _iMapper;
+        private readonly ICompanyRepository _iCompanyReposittory;
+        public CompanyService(IMapper iMapper, ICompanyRepository iCompanyRepository)
         {
-            throw new NotImplementedException();
+            _iMapper = iMapper;
+            _iCompanyReposittory = iCompanyRepository;
+        }
+        public async Task<ServiceResponse<List<CompanyDTO>>> GetAllAsync(CompanyFilterDTO companyFilterDTO)
+        {
+            await Task.Delay(1);
+            return new ServiceResponse<List<CompanyDTO>>();
         }
 
-        public Task<ServiceResponse<CompanyDTO>> GetAsync(Guid id)
+        public async Task<ServiceResponse<CompanyDTO>> GetAsync(Guid id)
         {
-            throw new NotImplementedException();
+            ServiceResponse<CompanyDTO> serviceResponse = new ServiceResponse<CompanyDTO>();
+            try
+            {
+                Company company = await _iCompanyReposittory.GetAsync(id);
+                serviceResponse.Data = _iMapper.Map<CompanyDTO>(company);
+            }
+            catch (Exception ex)
+            {
+                serviceResponse.Success = false;
+                serviceResponse.Message = ex.Message;
+            }
+
+            return serviceResponse;
         }
 
-        public Task<ServiceResponse<Guid>> InsertAsync(CompanyDTO companyDTO)
+        public async Task<ServiceResponse<Guid>> InsertAsync(CompanyDTO companyDTO)
         {
-            throw new NotImplementedException();
+            ServiceResponse<Guid> serviceResponse = new ServiceResponse<Guid>();
+            try
+            {
+                Company company = new Company(Guid.NewGuid(), companyDTO.IdUser, companyDTO.FantasyName, companyDTO.Name, companyDTO.CNPJ, companyDTO.IE);
+                await _iCompanyReposittory.InsertAsync(company);
+                serviceResponse.Data = company.Id;
+            }
+            catch (Exception ex)
+            {
+                serviceResponse.Success = false;
+                serviceResponse.Message = ex.Message;
+            }
+
+            return serviceResponse;
         }
 
-        public Task<ServiceResponse<bool>> UpdateAsync(CompanyDTO companyDTO)
+        public async Task<ServiceResponse<bool>> UpdateAsync(CompanyDTO companyDTO)
         {
-            throw new NotImplementedException();
+             ServiceResponse<bool> serviceResponse = new ServiceResponse<bool>();
+            try
+            {
+                Company company = new Company(Guid.NewGuid(), companyDTO.IdUser, companyDTO.FantasyName, companyDTO.Name, companyDTO.CNPJ, companyDTO.IE);
+                await _iCompanyReposittory.UpdateAsync(company);
+                serviceResponse.Data = true;
+            }
+            catch (Exception ex)
+            {
+                serviceResponse.Success = false;
+                serviceResponse.Message = ex.Message;
+            }
+
+            return serviceResponse;
         }
     }
 }

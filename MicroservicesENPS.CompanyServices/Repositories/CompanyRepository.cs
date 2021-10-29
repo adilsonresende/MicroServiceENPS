@@ -7,21 +7,52 @@ using MongoDB.Driver;
 
 namespace MicroservicesENPS.CompanyServices.Repositories.Interfaces
 {
-    public class CompanyReposiory : ICompanyReposiory
+    public class CompanyRepository : ICompanyRepository
     {
 
         private const string collectionName = nameof(Company);
         private readonly IMongoCollection<Company> _iMongoCollection;
         public readonly FilterDefinitionBuilder<Company> filterDefinitionBuilder = Builders<Company>.Filter;
 
-        public CompanyReposiory(IMongoDatabase iMongoDatabase)
+        public CompanyRepository(IMongoDatabase iMongoDatabase)
         {
             _iMongoCollection = iMongoDatabase.GetCollection<Company>(collectionName);
         }
 
-        public Task<List<Company>> GetAllAsync(CompanyFilterDTO companyFilter)
+        public async Task<List<Company>> GetAllAsync(CompanyFilterDTO companyFilter)
         {
-            throw new NotImplementedException();
+            FilterDefinition<Company> filterDefinition = filterDefinitionBuilder.Empty;
+            if (companyFilter.IsActive != null)
+            {
+                FilterDefinition<Company> isActiveFilter = filterDefinitionBuilder.Eq(x => x.IsActive, companyFilter.IsActive);
+                filterDefinition &= isActiveFilter;
+            }
+
+            if (!string.IsNullOrWhiteSpace(companyFilter.FantasyName))
+            {
+                FilterDefinition<Company> fantasyNameFilter = filterDefinitionBuilder.AnyIn(x => x.FantasyName, companyFilter.FantasyName);
+                filterDefinition &= fantasyNameFilter;
+            }
+
+            if (!string.IsNullOrWhiteSpace(companyFilter.FantasyName))
+            {
+                FilterDefinition<Company> nameFilter = filterDefinitionBuilder.AnyIn(x => x.Name, companyFilter.Name);
+                filterDefinition &= nameFilter;
+            }
+
+            if (!string.IsNullOrWhiteSpace(companyFilter.CNPJ))
+            {
+                FilterDefinition<Company> cNPJFilter = filterDefinitionBuilder.AnyIn(x => x.CNPJ, companyFilter.CNPJ);
+                filterDefinition &= cNPJFilter;
+            }
+
+            if(!string.IsNullOrWhiteSpace(companyFilter.IE)){
+                FilterDefinition<Company> IEFilter = filterDefinitionBuilder.AnyIn(x => x.IE, companyFilter.IE);
+                filterDefinition &= IEFilter;
+            }
+
+            List<Company> company = await _iMongoCollection.Find(filterDefinition).ToListAsync();
+            return company;
         }
 
         public async Task<Company> GetAsync(Guid id)

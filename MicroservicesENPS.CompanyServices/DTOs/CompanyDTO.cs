@@ -4,12 +4,12 @@ namespace MicroservicesENPS.CompanyServices.DTOs
 {
     public class CompanyDTO
     {
-        public Guid Id { get; private set; }
-        public Guid IdUser { get; private set; }
+        public Guid Id { get; set; }
+        public Guid IdUser { get; set; }
         public bool IsActive { get; set; } = true;
-        public string FantasyName { get; private set; }
-        public string Name { get; private set; }
-        public string CNPJ { get; private set; }
-        public string IE { get; private set; }
+        public string FantasyName { get; set; }
+        public string Name { get; set; }
+        public string CNPJ { get; set; }
+        public string IE { get; set; }
     }
 }

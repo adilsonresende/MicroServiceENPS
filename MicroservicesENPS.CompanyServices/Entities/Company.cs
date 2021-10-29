@@ -12,11 +12,14 @@ namespace MicroservicesENPS.CompanyServices.Entities
 
         public Company(Guid id, Guid idUser, string fantasyName, string name, string cnpj, string ie)
         {
-            DomainValidadorException.Whem(Id == Guid.Empty, IdIsNotValid);
+            DomainValidadorException.Whem(id == Guid.Empty, IdIsNotValid);
             Id = Id;
 
             DomainValidadorException.Whem(idUser == Guid.Empty, IdUserIsNotValid);
             IdUser = idUser;
+
+            DomainValidadorException.Whem(string.IsNullOrWhiteSpace(fantasyName), FantasyNameIsNotValid);
+            FantasyName = fantasyName;
 
             DomainValidadorException.Whem(string.IsNullOrWhiteSpace(name), NameIsNotValid);
             Name = name;
@@ -28,10 +31,9 @@ namespace MicroservicesENPS.CompanyServices.Entities
 
         private string IdIsNotValid = "Id inválido!";
         private string IdUserIsNotValid = "IdUser inválido!";
-        public string FantasyNameIsNotValid = "Fantasia inválido!";
-        public string NameIsNotValid = "Razão social inválida";
-        public string CNPJIsNotValid = "CNPJ inválido!";
-        public string IEIsNotValid = "IE inválida!";
+        private string FantasyNameIsNotValid = "Fantasia inválido!";
+        private string NameIsNotValid = "Razão social inválida";
+        private string CNPJIsNotValid = "CNPJ inválido!";
 
         public Guid Id { get; private set; }
         public Guid IdUser { get; private set; }
