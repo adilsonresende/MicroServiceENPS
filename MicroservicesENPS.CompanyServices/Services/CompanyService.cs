@@ -20,8 +20,18 @@ namespace MicroservicesENPS.CompanyServices.Services
         }
         public async Task<ServiceResponse<List<CompanyDTO>>> GetAllAsync(CompanyFilterDTO companyFilterDTO)
         {
-            await Task.Delay(1);
-            return new ServiceResponse<List<CompanyDTO>>();
+            ServiceResponse<List<CompanyDTO>> serviceResponse = new ServiceResponse<List<CompanyDTO>>();
+            try
+            {
+                List<Company> company = await _iCompanyReposittory.GetAllAsync(companyFilterDTO);
+                serviceResponse.Data = _iMapper.Map<List<CompanyDTO>>(company);
+            }
+            catch (Exception ex)
+            {
+                serviceResponse.Success = false;
+                serviceResponse.Message = ex.Message;
+            }
+            return serviceResponse;
         }
 
         public async Task<ServiceResponse<CompanyDTO>> GetAsync(Guid id)
@@ -61,7 +71,7 @@ namespace MicroservicesENPS.CompanyServices.Services
 
         public async Task<ServiceResponse<bool>> UpdateAsync(CompanyDTO companyDTO)
         {
-             ServiceResponse<bool> serviceResponse = new ServiceResponse<bool>();
+            ServiceResponse<bool> serviceResponse = new ServiceResponse<bool>();
             try
             {
                 Company company = new Company(Guid.NewGuid(), companyDTO.IdUser, companyDTO.FantasyName, companyDTO.Name, companyDTO.CNPJ, companyDTO.IE);

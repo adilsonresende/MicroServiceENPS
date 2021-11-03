@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using MicroservicesENPS.CompanyServices.DTOs;
 using MicroservicesENPS.CompanyServices.Entities;
+using MongoDB.Bson;
 using MongoDB.Driver;
 
 namespace MicroservicesENPS.CompanyServices.Repositories.Interfaces
@@ -30,24 +31,24 @@ namespace MicroservicesENPS.CompanyServices.Repositories.Interfaces
 
             if (!string.IsNullOrWhiteSpace(companyFilter.FantasyName))
             {
-                FilterDefinition<Company> fantasyNameFilter = filterDefinitionBuilder.AnyIn(x => x.FantasyName, companyFilter.FantasyName);
+                FilterDefinition<Company> fantasyNameFilter = filterDefinitionBuilder.Regex(x => x.FantasyName, new BsonRegularExpression(companyFilter.FantasyName));
                 filterDefinition &= fantasyNameFilter;
             }
 
-            if (!string.IsNullOrWhiteSpace(companyFilter.FantasyName))
+            if (!string.IsNullOrWhiteSpace(companyFilter.Name))
             {
-                FilterDefinition<Company> nameFilter = filterDefinitionBuilder.AnyIn(x => x.Name, companyFilter.Name);
+                FilterDefinition<Company> nameFilter = filterDefinitionBuilder.Regex(x => x.Name, new BsonRegularExpression(companyFilter.Name));
                 filterDefinition &= nameFilter;
             }
 
             if (!string.IsNullOrWhiteSpace(companyFilter.CNPJ))
             {
-                FilterDefinition<Company> cNPJFilter = filterDefinitionBuilder.AnyIn(x => x.CNPJ, companyFilter.CNPJ);
+                FilterDefinition<Company> cNPJFilter = filterDefinitionBuilder.Eq(x => x.CNPJ, companyFilter.CNPJ);
                 filterDefinition &= cNPJFilter;
             }
 
             if(!string.IsNullOrWhiteSpace(companyFilter.IE)){
-                FilterDefinition<Company> IEFilter = filterDefinitionBuilder.AnyIn(x => x.IE, companyFilter.IE);
+                FilterDefinition<Company> IEFilter = filterDefinitionBuilder.Eq(x => x.IE, companyFilter.IE);
                 filterDefinition &= IEFilter;
             }
 
