@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using MassTransit;
+using MicroservicesENPS.CompanyServices.Contracts;
 using MicroservicesENPS.CompanyServices.DTOs;
 using MicroservicesENPS.CompanyServices.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -13,10 +15,12 @@ namespace MicroservicesENPS.CompanyServices.Controllers
     public class CompanyController : ControllerBase
     {
         private readonly ICompanyService _iCompanyService;
+        private readonly IPublishEndpoint _iPublishEndpoint;
 
-        public CompanyController(ICompanyService iCompanyService)
+        public CompanyController(ICompanyService iCompanyService, IPublishEndpoint iPublishEndpoint)
         {
             _iCompanyService = iCompanyService;
+            _iPublishEndpoint = iPublishEndpoint;
         }
 
         [HttpGet]
@@ -58,6 +62,7 @@ namespace MicroservicesENPS.CompanyServices.Controllers
                 return BadRequest(serviceResponse);
             }
 
+            await _iPublishEndpoint.Publish(new CompanyCreated(serviceResponse.Data, companyDTO.FantasyName, companyDTO.Name));
             return Ok(serviceResponse);
         }
 
@@ -71,6 +76,7 @@ namespace MicroservicesENPS.CompanyServices.Controllers
                 return BadRequest(serviceResponse);
             }
 
+            await _iPublishEndpoint.Publish(new CompanyUpdated(companyDTO.Id, companyDTO.FantasyName, companyDTO.Name));
             return Ok(serviceResponse);
         }
 

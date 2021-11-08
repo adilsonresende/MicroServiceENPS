@@ -1,3 +1,5 @@
+using MassTransit;
+using MassTransit.Definition;
 using MicroservicesENPS.CompanyServices.Repositories.Interfaces;
 using MicroservicesENPS.CompanyServices.Services;
 using MicroservicesENPS.CompanyServices.Services.Interfaces;
@@ -22,10 +24,28 @@ namespace MicroservicesENPS.CompanyServices.Helpers
             {
                 IConfiguration iConfiguration = serviceProvider.GetService<IConfiguration>();
                 ServiceSettings serviceSettings = iConfiguration.GetSection(nameof(ServiceSettings)).Get<ServiceSettings>();
-                var mongoDbSettings = iConfiguration.GetSection(nameof(MongoDbSettings)).Get<MongoDbSettings>();
-                var mongoClient = new MongoClient(mongoDbSettings.ConnectionString);
+                MongoDbSettings mongoDbSettings = iConfiguration.GetSection(nameof(MongoDbSettings)).Get<MongoDbSettings>();
+                MongoClient mongoClient = new MongoClient(mongoDbSettings.ConnectionString);
                 return mongoClient.GetDatabase(serviceSettings.ServiceName);
             });
+
+            return services;
+        }
+
+        public static IServiceCollection AddRabbitMq(this IServiceCollection services, IConfiguration iConfiguration)
+        {
+            services.AddMassTransit(x =>
+            {
+                ServiceSettings serviceSettings = iConfiguration.GetSection(nameof(ServiceSettings)).Get<ServiceSettings>();
+                x.UsingRabbitMq((context, configurator) =>
+                {
+                    RabbitMqSettings rabbitMqSettings = iConfiguration.GetSection(nameof(RabbitMqSettings)).Get<RabbitMqSettings>();
+                    configurator.Host(rabbitMqSettings.host);
+                    configurator.ConfigureEndpoints(context, new KebabCaseEndpointNameFormatter(serviceSettings.ServiceName, false)); 
+                });
+            });
+
+            services.AddMassTransitHostedService();
 
             return services;
         }

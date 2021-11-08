@@ -23,6 +23,7 @@ namespace MicroservicesENPS.CompanyServices
         {
 
             services.AddMongoDb();
+            services.AddRabbitMq(Configuration);
             services.AddAutoMapper(typeof(MappingProfile));
             services.AddRepository();
             services.AddServices();
