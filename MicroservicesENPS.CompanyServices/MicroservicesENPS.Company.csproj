@@ -3,11 +3,14 @@
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="AutoMapper" Version="10.1.1"/>
-    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.1"/>
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3"/>
-    <PackageReference Include="MongoDB.Driver" Version="2.13.2"/>
-    <PackageReference Include="MassTransit.AspNetCore" Version="7.2.4"/>
-    <PackageReference Include="MassTransit.RabbitMQ" Version="7.2.4"/>
+    <PackageReference Include="AutoMapper" Version="10.1.1" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.1" />
+    <PackageReference Include="MicrosevicesENPS.Common" Version="1.0.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
+    <PackageReference Include="MongoDB.Driver" Version="2.13.2" />
+   
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MicroserviceENPS.Contracts\MicroserviceENPS.Contracts.csproj" />
   </ItemGroup>
 </Project>

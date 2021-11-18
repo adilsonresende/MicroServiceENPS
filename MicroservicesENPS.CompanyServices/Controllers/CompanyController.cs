@@ -2,11 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using MassTransit;
-using MicroservicesENPS.CompanyServices.Contracts;
+using MicroserviceENPS.Contracts;
 using MicroservicesENPS.CompanyServices.DTOs;
 using MicroservicesENPS.CompanyServices.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-
 
 namespace MicroservicesENPS.CompanyServices.Controllers
 {
@@ -79,6 +78,5 @@ namespace MicroservicesENPS.CompanyServices.Controllers
             await _iPublishEndpoint.Publish(new CompanyUpdated(companyDTO.Id, companyDTO.FantasyName, companyDTO.Name));
             return Ok(serviceResponse);
         }
-
     }
 }

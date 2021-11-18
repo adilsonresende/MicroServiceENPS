@@ -1,3 +1,6 @@
+using System;
+using System.Reflection;
+using GreenPipes;
 using MassTransit;
 using MassTransit.Definition;
 using MicroservicesENPS.CompanyServices.Repositories.Interfaces;
@@ -28,24 +31,6 @@ namespace MicroservicesENPS.CompanyServices.Helpers
                 MongoClient mongoClient = new MongoClient(mongoDbSettings.ConnectionString);
                 return mongoClient.GetDatabase(serviceSettings.ServiceName);
             });
-
-            return services;
-        }
-
-        public static IServiceCollection AddRabbitMq(this IServiceCollection services, IConfiguration iConfiguration)
-        {
-            services.AddMassTransit(x =>
-            {
-                ServiceSettings serviceSettings = iConfiguration.GetSection(nameof(ServiceSettings)).Get<ServiceSettings>();
-                x.UsingRabbitMq((context, configurator) =>
-                {
-                    RabbitMqSettings rabbitMqSettings = iConfiguration.GetSection(nameof(RabbitMqSettings)).Get<RabbitMqSettings>();
-                    configurator.Host(rabbitMqSettings.host);
-                    configurator.ConfigureEndpoints(context, new KebabCaseEndpointNameFormatter(serviceSettings.ServiceName, false)); 
-                });
-            });
-
-            services.AddMassTransitHostedService();
 
             return services;
         }

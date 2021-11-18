@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using MicroservicesENPS.CompanyServices.MappingProfiles;
+using Play.Common.ServiceBus;
 
 namespace MicroservicesENPS.CompanyServices
 {
@@ -13,17 +14,17 @@ namespace MicroservicesENPS.CompanyServices
     {
         public Startup(IConfiguration configuration)
         {
-            Configuration = configuration;
+            _configuration = configuration;
         }
 
-        public IConfiguration Configuration { get; }
+        public IConfiguration _configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
 
             services.AddMongoDb();
-            services.AddRabbitMq(Configuration);
+            services.AddMassTransitWithRabbitMq();
             services.AddAutoMapper(typeof(MappingProfile));
             services.AddRepository();
             services.AddServices();

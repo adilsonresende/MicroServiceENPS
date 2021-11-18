@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using Play.Common.ServiceBus;
 
 namespace MicroserviceENPS.UserServices
 {
@@ -22,6 +23,7 @@ namespace MicroserviceENPS.UserServices
         {
            
             services.AddMongoDb();
+            services.AddMassTransitWithRabbitMq();
             services.AddAutoMapper(typeof(MappingProfile));
             services.AddRepository();
             services.AddServices();
